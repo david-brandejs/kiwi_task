@@ -10,7 +10,8 @@ class TypeaheadInput extends Component {
     super();
     
     this.state = {
-      places: []
+      places: [],
+      warning: false
     };
   }
   
@@ -42,25 +43,55 @@ class TypeaheadInput extends Component {
       .then(data => this.setState({places: data}));
   }
   
+  /** 
+   * Updates the search form.
+   * 
+   * @param {Object} e - the place object.
+   */
+  _handleChange = e => {
+    if(e.length !== 0) {
+      this.props.updateSearch(this.props.place, e[0].id);
+    }
+  }
+  
+  /** 
+   * Changes AsyncTypeahead's class based on input length.
+   * 
+   * @param {string} e - input event.
+   */
+  _handleInputChange = e => {
+    if(e.length > 0) {
+      this.setState({warning: false});
+    } else {
+      this.setState({warning: true});
+    }
+  }
+  
   render() {
     return (
-      <AsyncTypeahead
-        isLoading
-        options={this.state.places}
-        labelKey="value"
-        minLength={0}
-        filterBy={["value", "id"]}
-        onSearch={this._handleSearch}
-        onChange={e => this.props.updateSearch(this.props.place, e[0].id)}
-        placeholder={"Enter " + this.props.place}
-        renderMenuItemChildren={this._renderMenuItemChildren}
-      />
+      <div className="form-group col-md-3">
+        <label>{ this.props.label }</label>
+        <AsyncTypeahead
+          className={this.state.warning ? "warning" : ""} 
+          isLoading
+          options={this.state.places}
+          labelKey="value"
+          minLength={0}
+          filterBy={["value", "id"]}
+          onSearch={this._handleSearch}
+          onChange={this._handleChange}
+          onInputChange={this._handleInputChange}
+          placeholder={"Enter " + this.props.place}
+          renderMenuItemChildren={this._renderMenuItemChildren}
+        />
+      </div>
     )
   }
 }
 
 TypeaheadInput.propTypes = {
   place: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   updateSearch: PropTypes.func.isRequired
 };
 

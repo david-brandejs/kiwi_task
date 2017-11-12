@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
 
 import SearchForm from './components/SearchForm/SearchForm.js';
 import FlightsList from './components/FlightsList/FlightsList.js';
+
+require("./App.less");
 
 class App extends Component {
   constructor() {
