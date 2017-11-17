@@ -1,35 +1,32 @@
-
 // FlightsList.js
-
+ 
 h1 {
     margin-top: 20px;
     font-size: 30px;
 }
-
+ 
 // FlightItem.js
-
+ 
 .break-line {
     border-bottom: 1px solid rgba(0,0,0,.125);
 }
-
+ 
 .list-group-item {
     margin-bottom: 10px;
 }
-
+ 
 .book-button {
     margin-top: 10px;
 }
-
+ 
 // Mixed
-
+ 
 .flight-search-form, .flight-list, .flights-found {
     margin-top: 40px;
 }
-
+ 
 .warning {
     .rbt-input {
         border: 1px solid #dc3545;
     }
 }
-
-

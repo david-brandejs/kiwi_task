@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import 'whatwg-fetch';
 import {AsyncTypeahead} from 'react-bootstrap-typeahead';
 
-import Status from '../Status.js';
+import Api from '../Api.js';
 
 class TypeaheadInput extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     
     this.state = {
       places: [],
@@ -38,9 +37,9 @@ class TypeaheadInput extends Component {
    * @param {string} query - The term to search for.
    */
   _handleSearch = query => {
-    fetch(`https://api.skypicker.com/places?term=${query}&v=2&locale=en`)
-      .then(Status.checkStatus)
-      .then(data => this.setState({places: data}));
+    Api.fetchData(`https://api.skypicker.com/places?term=${query}&v=2&locale=en`)
+      .then(data => this.setState({places: data}))
+      .catch(error => this.setState({places: error}));
   }
   
   /** 

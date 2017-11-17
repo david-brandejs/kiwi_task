@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import 'whatwg-fetch';
 
 import TypeaheadInput from './TypeaheadInput.js';
 import DateInput from './DateInput.js';
-import Status from '../Status.js';
+import Api from '../Api.js';
 
 class SearchForm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     
     this.state = {
       origin: '',
@@ -58,12 +57,10 @@ class SearchForm extends Component {
       returnTo = this.formatDate(returnTo);
       
       // a range picker input should be implemented instead of choosing flights on a specific day (see dateTo=${dateFrom}, returnFrom=${returnTo})
-      //fetch(`https://api.skypicker.com/flights?v=2&locale=en&flyFrom=prague_cz&to=paris_fr&dateFrom=18%2F03%2F2018&dateTo=18%2F03%2F2018&typeFlight=return&returnFrom=18%2F03%2F2018&returnTo=18%2F03%2F2018`)
-      fetch(`https://api.skypicker.com/flights?v=2&locale=en&flyFrom=${origin}&to=${destination}&dateFrom=${dateFrom}&dateTo=${dateFrom}&typeFlight=return&returnFrom=${returnTo}&returnTo=${returnTo}`)
-        .then(Status.checkStatus)
-        .then(data => { 
-          this.props.updateFlights(data.data);
-        });
+      Api.fetchData(`https://api.skypicker.com/flights?v=2&locale=en&flyFrom=${origin}&to=${destination}&dateFrom=${dateFrom}&dateTo=${dateFrom}&typeFlight=return&returnFrom=${returnTo}&returnTo=${returnTo}`)
+//      Api.fetchData(`https://api.skypicker.com/flights?v=2&locale=en&flyFrom=prague_cz&to=paris_fr&dateFrom=18%2F03%2F2018&dateTo=18%2F03%2F2018&typeFlight=return&returnFrom=18%2F03%2F2018&returnTo=18%2F03%2F2018`)
+        .then(data => this.props.updateFlights(data.data))
+        .catch(error => this.props.updateFlights(error));
     } else {
       this.setState({submitFailed: true});
     }
